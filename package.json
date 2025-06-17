@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://your-username.github.io/project-llm/",
+  "homepage": "https://faxirr.github.io/project-llm/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

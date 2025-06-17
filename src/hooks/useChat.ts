@@ -48,26 +48,6 @@ ${knowledge.material_technical_base.training_centers.map(center =>
       `• ${center.name}: ${center.description}`
   ).join('\n')}
 
-🎯 **ГУРТКИ ТА АКТИВНОСТІ:**
-**Технічно-виробничі:**
-${knowledge.student_life.clubs_and_activities.technical_production_clubs.map(club => `• ${club}`).join('\n')}
-
-**Спортивні:**
-${knowledge.student_life.clubs_and_activities.sports_clubs.map(club => `• ${club}`).join('\n')}
-
-**Мистецькі:**
-${knowledge.student_life.clubs_and_activities.artistic_clubs.map(club => `• ${club}`).join('\n')}
-
-📋 **ПРАВИЛА ВСТУПУ:**
-${knowledge.admission_rules.general_info}
-Період подачі документів: ${knowledge.admission_rules.admission_periods}
-
-**Необхідні документи:**
-${knowledge.admission_rules.requirements.documents_required.map(doc => `• ${doc}`).join('\n')}
-
-🏆 **ДОСЯГНЕННЯ:**
-${knowledge.achievements_and_partnerships.achievements.map(achievement => `• ${achievement}`).join('\n')}
-
 📞 **КОРИСНІ РЕСУРСИ:**
 ${LEARNING_RESOURCES.websites.map(site => `• ${site.name}: ${site.url} - ${site.description}`).join('\n')}
 `;

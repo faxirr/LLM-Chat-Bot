@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MessageCircle, Send } from 'lucide-react';
 import { generatePrompt } from './config/prompt';
-// Прибираємо невикористані імпорти
 
 interface Message {
   id: number;
