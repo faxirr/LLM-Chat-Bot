@@ -1,5 +1,8 @@
 # Назва workflow - буде відображатися в GitHub Actions
 name: Deploy to GitHub Pages
+run: npm run build
+env:
+  VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
 
 # Коли запускається workflow
 on:
