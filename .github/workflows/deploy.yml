@@ -5,7 +5,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master
+      - master  # Залишаємо master як у вас
   pull_request:
     branches:
       - master
@@ -50,7 +50,10 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          # ВАЖЛИВО: Назва має співпадати з тою, що в коді
+          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+          # Явно вказуємо що це продакшн збірка
+          NODE_ENV: production
 
       # Крок 6: Налаштувати GitHub Pages
       - name: Setup Pages
