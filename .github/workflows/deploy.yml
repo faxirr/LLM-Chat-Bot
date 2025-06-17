@@ -1,23 +1,20 @@
 # Назва workflow - буде відображатися в GitHub Actions
 name: Deploy to GitHub Pages
-run: npm run build
-env:
-  VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
 
 # Коли запускається workflow
 on:
   push:
     branches:
-      - master  # При push в main гілку
+      - master
   pull_request:
     branches:
-      - master  # При створенні PR в main гілку (для тестування)
+      - master
 
 # Дозволи для workflow
 permissions:
-  contents: read     # Читати код з репозиторію
-  pages: write       # Писати на GitHub Pages
-  id-token: write    # Для безпечної автентифікації
+  contents: read
+  pages: write
+  id-token: write
 
 # Дозволяє тільки один deployment одночасно
 concurrency:
@@ -26,12 +23,8 @@ concurrency:
 
 # Основна робота
 jobs:
-  # Назва job'а
   build-and-deploy:
-    # На якій операційній системі запускати
     runs-on: ubuntu-latest
-
-    # Кроки виконання
     steps:
       # Крок 1: Завантажити код з репозиторію
       - name: Checkout repository
@@ -41,21 +34,23 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'  # Версія Node.js
-          cache: 'npm'        # Кешувати npm для швидкості
+          node-version: '18'
+          cache: 'npm'
 
       # Крок 3: Встановити залежності
       - name: Install dependencies
-        run: npm ci  # npm ci швидше за npm install для CI
+        run: npm ci
 
       # Крок 4: Перевірити код на помилки (опціонально)
       - name: Lint code
         run: npm run lint
-        continue-on-error: true  # Продовжити навіть якщо є lint помилки
+        continue-on-error: true
 
-      # Крок 5: Зібрати проект
+      # Крок 5: Зібрати проект (з використанням секрету)
       - name: Build project
         run: npm run build
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
 
       # Крок 6: Налаштувати GitHub Pages
       - name: Setup Pages
@@ -65,7 +60,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'  # Папка зі збіркою
+          path: './dist'
 
       # Крок 8: Розгорнути на GitHub Pages
       - name: Deploy to GitHub Pages
