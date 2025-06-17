@@ -1,0 +1,70 @@
+# Назва workflow - буде відображатися в GitHub Actions
+name: Deploy to GitHub Pages
+
+# Коли запускається workflow
+on:
+  push:
+    branches:
+      - main  # При push в main гілку
+  pull_request:
+    branches:
+      - main  # При створенні PR в main гілку (для тестування)
+
+# Дозволи для workflow
+permissions:
+  contents: read     # Читати код з репозиторію
+  pages: write       # Писати на GitHub Pages
+  id-token: write    # Для безпечної автентифікації
+
+# Дозволяє тільки один deployment одночасно
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+# Основна робота
+jobs:
+  # Назва job'а
+  build-and-deploy:
+    # На якій операційній системі запускати
+    runs-on: ubuntu-latest
+
+    # Кроки виконання
+    steps:
+      # Крок 1: Завантажити код з репозиторію
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Крок 2: Встановити Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # Версія Node.js
+          cache: 'npm'        # Кешувати npm для швидкості
+
+      # Крок 3: Встановити залежності
+      - name: Install dependencies
+        run: npm ci  # npm ci швидше за npm install для CI
+
+      # Крок 4: Перевірити код на помилки (опціонально)
+      - name: Lint code
+        run: npm run lint
+        continue-on-error: true  # Продовжити навіть якщо є lint помилки
+
+      # Крок 5: Зібрати проект
+      - name: Build project
+        run: npm run build
+
+      # Крок 6: Налаштувати GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      # Крок 7: Завантажити збірку як артефакт
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'  # Папка зі збіркою
+
+      # Крок 8: Розгорнути на GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
