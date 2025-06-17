@@ -8,10 +8,10 @@ env:
 on:
   push:
     branches:
-      - main  # При push в main гілку
+      - master  # При push в main гілку
   pull_request:
     branches:
-      - main  # При створенні PR в main гілку (для тестування)
+      - master  # При створенні PR в main гілку (для тестування)
 
 # Дозволи для workflow
 permissions:
