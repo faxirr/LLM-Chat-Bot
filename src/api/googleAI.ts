@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 import { AppConfig } from '../types';
+import { generatePrompt, VPU_29_HELPERS } from './index';
 
 export class GoogleAIService {
   private model: GenerativeModel | null = null;
@@ -10,7 +11,7 @@ export class GoogleAIService {
     this.initialize();
   }
 
-  private initialize() {
+  private initialize(): void {
     if (!this.config.apiKey) {
       console.error('API key is not provided');
       return;
@@ -24,18 +25,22 @@ export class GoogleAIService {
     }
   }
 
-  public updateConfig(config: AppConfig) {
+  public updateConfig(config: AppConfig): void {
     this.config = config;
     this.initialize();
   }
 
   public async generateResponse(
       messages: { role: string; content: string }[],
-      systemPrompt: string
+      customSystemPrompt?: string
   ): Promise<string> {
     if (!this.model) {
       throw new Error('Model not initialized. Please check your API key.');
     }
+
+    // Використовуємо кастомний промпт або генеруємо з контекстом
+    const lastMessage = messages[messages.length - 1];
+    const systemPrompt = customSystemPrompt || generatePrompt(lastMessage.content);
 
     // Конвертуємо формат повідомлень для Gemini API
     const historyFormatted = messages.slice(0, -1).map(msg => ({
@@ -58,7 +63,6 @@ export class GoogleAIService {
 
     while (retries <= this.config.maxRetries) {
       try {
-        const lastMessage = messages[messages.length - 1];
         const result = await chatSession.sendMessage(lastMessage.content);
         const response = result.response;
         return response.text();
@@ -87,6 +91,27 @@ export class GoogleAIService {
     }
 
     throw lastError || new Error('Failed to generate response after retries');
+  }
+
+  // Допоміжні методи для роботи з даними ВПУ №29
+  public getAvailableProfessions(): string[] {
+    return VPU_29_HELPERS.getAllProfessions();
+  }
+
+  public findPrograms(professionName: string) {
+    return VPU_29_HELPERS.findProgramByProfession(professionName);
+  }
+
+  public getContactInfo() {
+    return VPU_29_HELPERS.getContactInfo();
+  }
+
+  public formatProfessionInfo(professionName: string) {
+    return VPU_29_HELPERS.formatProfessionInfo(professionName);
+  }
+
+  public checkLegalStatus() {
+    return VPU_29_HELPERS.checkLegalStatus();
   }
 }
 

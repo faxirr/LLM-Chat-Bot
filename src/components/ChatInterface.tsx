@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ч'import React, { useState, useEffect } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import Header from './Header';

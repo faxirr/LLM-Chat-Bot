@@ -1,3 +1,3 @@
-// Re-export всіх конфігурацій з цієї папки
-export { VPU_29_LVIV, LEARNING_RESOURCES } from './knowledge';
+export { VPU_29_LVIV, VPU_29_HELPERS, LEARNING_RESOURCES } from './knowledge';
 export { SYSTEM_PROMPT, generatePrompt } from './prompt';
+export { GoogleAIService } from './googleAI';

@@ -3,7 +3,6 @@ import { ChatState, Message, AppConfig } from '../types';
 import GoogleAIService from '../api/googleAI';
 import defaultConfig from '../config/config.json';
 import { VPU_29_LVIV, LEARNING_RESOURCES } from '../config/knowledge';
-// Функція для конвертації бази знань у текст для промпту
 const formatKnowledgeBase = () => {
   const knowledge = VPU_29_LVIV;
 
